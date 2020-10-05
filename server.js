@@ -1,19 +1,30 @@
+const express = require("express")
+const db = require("./resource")
 
-const http = require("http")
+const server = express()
 
-const server = http.createServer((req, res) =>{
+server.get("/", (req,res) => {
+    res.json({ message: "Hello, World" })
+})
 
-    res.statusCode = 200
+server.get("/users/:id", (req,res) => {
 
-    res.setHeader("Content-Type", "text/html")
+    const id = req.params.id
+    const users = db.getUsers(id)
 
-    res.write("<h1> Hellow World </h1>")
+    if (user){ 
+        res.json(users)
+    } else { 
+        res.status(404).json({
+            message: " This user doent exist",
+        })
+    }
+})
 
-    res.end()
-
+server.post("/api/users",(req,res) =>{
+    res.json()
 })
 
 server.listen(8080, () => {
-
-    console.log("server started") }
-)
+    console.log("server started")
+})
