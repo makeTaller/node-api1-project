@@ -24,19 +24,30 @@ server.get("/users/:id", (req,res) => {
         })
     }
 })
+
 // step 1
 server.post("/api/users",(req,res) =>{
-    const newUser = db.createUser({
-        name: req.body.name
-    })
-    res.json(newUser)
+    const newUser =req.body
+    if ( !newUser.name  || !newUser.bio ){
+       res.json( { errorMessage: "Please provide name and bio for the user." })
+    }else {
+        try{
+            const newPost = db.createUser({
+            name: req.body.name })
+            res.status(201)
+            res.json(newPost)
+        }catch(error){
+            console.log(error)
+            res.status(500)
+        }
+    }
 })
-// step 2
-server.get("/api/users", (req, res) => {
-    const id = req.params.id
-    const users = db.getUsers(id)
 
-    res.json(users)
+// step 2
+server.get("/api/users/:id", (req, res) => {
+    const id = req.params.id
+    const user = db.getUserById(id)
+    res.json(user)
 })
 
 // step 3
