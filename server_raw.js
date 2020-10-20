@@ -1,5 +1,7 @@
 
+// This is only an example of how things would be without express
 const http = require("http")
+
 
 const server = http.createServer((req, res) =>{
 
